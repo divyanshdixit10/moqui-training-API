@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+    <!-- Service for creating an OrderItem -->
+    <service verb="create" noun="OrderItem">
+        <in-parameters>
+            <auto-parameters include="all" />
+        </in-parameters>
+        <out-parameters>
+            <auto-parameters include="pk" />
+        </out-parameters>
+        <actions>
+            <entity-make-value entity-name="moqui.training.OrderItem" value-field="datafield" />
+            <entity-set value-field="datafield" include="all"/>
+            <if condition="datafield.orderItemSeqId == null">
+                <entity-sequenced-id-primary value-field="datafield"/>
+            </if>
+            <entity-create value-field="datafield" />
+        </actions>
+    </service>
+
+    <!-- Service to get an OrderItem -->
+    <service verb="get" noun="OrderItem">
+        <in-parameters>
+            <parameter name="orderItemSeqId" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="orderItemList"></parameter>
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="moqui.training.OrderItem" list="orderItemList">
+                <econdition field-name="orderItemSeqId"/>
+                <select-field field-name="orderId" />
+                <select-field field-name="productId" />
+                <select-field field-name="quantity" />
+                <select-field field-name="status" />
+            </entity-find>
+        </actions>
+    </service>
+
+    <!-- Update OrderItem -->
+    <service verb="put" noun="OrderItem">
+        <in-parameters>
+            <auto-parameters include="all"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="pk"></parameter>
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="moqui.training.OrderItem" value-field="orderItemList">
+                <field-map field-name="orderItemSeqId" from="context.orderItemSeqId" />
+            </entity-find-one>
+            <if condition="orderItemList != null">
+                <entity-set value-field="orderItemList" include="all" />
+                <entity-update value-field="orderItemList"/>
+            </if>
+        </actions>
+    </service>
+
+    <!-- Service for deleting OrderItem -->
+    <service verb="delete" noun="OrderItem">
+        <in-parameters>
+            <parameter name="orderItemSeqId" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="orderItemSeqId" />
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="moqui.training.OrderItem" value-field="filterdata">
+                <field-map field-name="orderItemSeqId"/>
+            </entity-find-one>
+            <if condition="filterdata != null">
+                <entity-delete value-field="filterdata"/>
+            </if>
+        </actions>
+    </service>
+</services>

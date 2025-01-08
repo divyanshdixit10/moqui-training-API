@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+
+    <!-- Service to create a ContactMech -->
+    <service verb="create" noun="ContactMech">
+        <in-parameters>
+            <auto-parameters include="all" />
+        </in-parameters>
+        <out-parameters>
+            <auto-parameters include="pk" />
+        </out-parameters>
+        <actions>
+            <entity-make-value entity-name="moqui.training.ContactMech" value-field="datafield" />
+            <entity-set value-field="datafield" include="all" />
+            <if condition="datafield.contactMechId == null">
+                <entity-sequenced-id-primary value-field="datafield" />
+            </if>
+            <entity-create value-field="datafield" />
+        </actions>
+    </service>
+
+    <!-- Service to get ContactMech -->
+    <service verb="get" noun="ContactMech">
+        <in-parameters>
+            <parameter name="contactMechId" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="contactMechList" />
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="moqui.training.ContactMech" list="contactMechList">
+                <econdition field-name="contactMechId" />
+                <select-field field-name="contactMechId" />
+                <select-field field-name="partyId" />
+                <select-field field-name="streetAddress" />
+                <select-field field-name="city" />
+                <select-field field-name="state" />
+                <select-field field-name="postalCode" />
+            </entity-find>
+        </actions>
+    </service>
+
+    <!-- Update ContactMech -->
+    <service verb="put" noun="ContactMech">
+        <in-parameters>
+            <auto-parameters include="all" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="pk" />
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="moqui.training.ContactMech" value-field="contactMechList">
+                <field-map field-name="contactMechId" from="context.contactMechId" />
+            </entity-find-one>
+            <if condition="contactMechList != null">
+                <entity-set value-field="contactMechList" include="all" />
+                <entity-update value-field="contactMechList" />
+            </if>
+        </actions>
+    </service>
+
+    <!-- Service to delete ContactMech -->
+    <service verb="delete" noun="ContactMech">
+        <in-parameters>
+            <parameter name="contactMechId" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="contactMechId" />
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="moqui.training.RelatedEntity" list="relatedData">
+                <econdition field-name="contactMechId" />
+            </entity-find>
+            <if condition="relatedData.size() > 0">
+                <iterate list="relatedData" entry="entry">
+                    <entity-delete value-field="entry" />
+                </iterate>
+            </if>
+            <entity-find-one entity-name="moqui.training.ContactMech" value-field="filterdata">
+                <field-map field-name="contactMechId" />
+            </entity-find-one>
+            <if condition="filterdata != null">
+                <entity-delete value-field="filterdata" />
+            </if>
+        </actions>
+    </service>
+
+</services>
+
+
+        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">-->
+
+<!--    &lt;!&ndash; Service to create a ContactMech &ndash;&gt;-->
+<!--    <service verb="create" noun="ContactMech">-->
+<!--        <in-parameters>-->
+<!--            <auto-parameters include="all" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <auto-parameters include="pk" />-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-make-value entity-name="moqui.training.ContactMech" value-field="datafield" />-->
+<!--            <entity-set value-field="datafield" include="all"/>-->
+<!--            <if condition="datafield.contactMechId == null">-->
+<!--                <entity-sequenced-id-primary value-field="datafield"/>-->
+<!--            </if>-->
+<!--            <entity-create value-field="datafield" />-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Service to get ContactMech &ndash;&gt;-->
+<!--    <service verb="get" noun="ContactMech">-->
+<!--        <in-parameters>-->
+<!--            <parameter name="contactMechId" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="contactMechList"/>-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find entity-name="moqui.training.ContactMech" list="contactMechList">-->
+<!--                <econdition field-name="contactMechId"/>-->
+<!--                <select-field field-name="contactMechId" />-->
+<!--                <select-field field-name="partyId" />-->
+<!--                <select-field field-name="streetAddress" />-->
+<!--                <select-field field-name="city" />-->
+<!--                <select-field field-name="state" />-->
+<!--                <select-field field-name="postalCode" />-->
+<!--            </entity-find>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Update ContactMech &ndash;&gt;-->
+<!--    <service verb="put" noun="ContactMech">-->
+<!--        <in-parameters>-->
+<!--            <auto-parameters include="all"/>-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="pk"/>-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find-one entity-name="moqui.training.ContactMech" value-field="contactMechList">-->
+<!--                <field-map field-name="contactMechId" from="context.contactMechId" />-->
+<!--            </entity-find-one>-->
+<!--            <if condition="contactMechList != null">-->
+<!--                <entity-set value-field="contactMechList" include="all" />-->
+<!--                <entity-update value-field="contactMechList"/>-->
+<!--            </if>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Service to delete ContactMech with foreign key dependency handling &ndash;&gt;-->
+<!--    <service verb="delete" noun="ContactMech">-->
+<!--        <in-parameters>-->
+<!--            <parameter name="contactMechId" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="contactMechId" />-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            &lt;!&ndash; Check for foreign key dependencies &ndash;&gt;-->
+<!--            <entity-find entity-name="moqui.training.RelatedEntity" list="relatedData">-->
+<!--                <econdition field-name="contactMechId"/>-->
+<!--            </entity-find>-->
+<!--            <if condition="relatedData != null &amp; relatedData.size() > 0">-->
+<!--                &lt;!&ndash; Delete dependent foreign key data &ndash;&gt;-->
+<!--                <entity-delete-all entity-name="moqui.training.RelatedEntity">-->
+<!--                    <econdition field-name="contactMechId" />-->
+<!--                </entity-delete-all>-->
+<!--            </if>-->
+
+<!--            &lt;!&ndash; Proceed with deleting the ContactMech &ndash;&gt;-->
+<!--            <entity-find-one entity-name="moqui.training.ContactMech" value-field="filterdata">-->
+<!--                <field-map field-name="contactMechId"/>-->
+<!--            </entity-find-one>-->
+<!--            <if condition="filterdata != null">-->
+<!--                <entity-delete value-field="filterdata"/>-->
+<!--            </if>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--</services>-->
+
+
+
+<!--        <?xml version="1.0" encoding="UTF-8"?>-->
+<!--<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">-->
+
+<!--    &lt;!&ndash; Service to create a ContactMech &ndash;&gt;-->
+<!--    <service verb="create" noun="ContactMech">-->
+<!--        <in-parameters>-->
+<!--            <auto-parameters include="all" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <auto-parameters include="pk" />-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-make-value entity-name="moqui.training.ContactMech" value-field="datafield" />-->
+<!--            <entity-set value-field="datafield" include="all"/>-->
+<!--            <if condition="datafield.contactMechId == null">-->
+<!--                <entity-sequenced-id-primary value-field="datafield"/>-->
+<!--            </if>-->
+<!--            <entity-create value-field="datafield" />-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Service to get ContactMech &ndash;&gt;-->
+<!--    <service verb="get" noun="ContactMech">-->
+<!--        <in-parameters>-->
+<!--            <parameter name="contactMechId" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="contactMechList"/>-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find entity-name="moqui.training.ContactMech" list="contactMechList">-->
+<!--                <econdition field-name="contactMechId"/>-->
+<!--                <select-field field-name="contactMechId" />-->
+<!--                <select-field field-name="partyId" />-->
+<!--                <select-field field-name="streetAddress" />-->
+<!--                <select-field field-name="city" />-->
+<!--                <select-field field-name="state" />-->
+<!--                <select-field field-name="postalCode" />-->
+<!--            </entity-find>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Update ContactMech &ndash;&gt;-->
+<!--    <service verb="put" noun="ContactMech">-->
+<!--        <in-parameters>-->
+<!--            <auto-parameters include="all"/>-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="pk"/>-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find-one entity-name="moqui.training.ContactMech" value-field="contactMechList">-->
+<!--                <field-map field-name="contactMechId" from="context.contactMechId" />-->
+<!--            </entity-find-one>-->
+<!--            <if condition="contactMechList != null">-->
+<!--                <entity-set value-field="contactMechList" include="all" />-->
+<!--                <entity-update value-field="contactMechList"/>-->
+<!--            </if>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Service to delete ContactMech &ndash;&gt;-->
+<!--    <service verb="delete" noun="ContactMech">-->
+<!--        <in-parameters>-->
+<!--            <parameter name="contactMechId" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="contactMechId" />-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find-one entity-name="moqui.training.ContactMech" value-field="filterdata">-->
+<!--                <field-map field-name="contactMechId"/>-->
+<!--            </entity-find-one>-->
+<!--            <if condition="filterdata!=null">-->
+<!--                <entity-delete value-field="filterdata"/>-->
+<!--            </if>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--</services>-->

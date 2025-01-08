@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+
+    <service verb="create" noun="OrderItem" type="entity-auto">
+        <description>Create an OrderItem record automatically</description>
+        <in-parameters>
+            <parameter name="orderId" type="String" required="true"/>
+            <parameter name="productId" type="String" required="true"/>
+            <parameter name="quantity" type="BigDecimal" required="true"/>
+            <parameter name="status" type="String"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="orderItemSeqId"/>
+        </out-parameters>
+    </service>
+
+    <service verb="update" noun="OrderItem" type="entity-auto">
+        <description>Update an OrderItem record</description>
+        <in-parameters>
+            <parameter name="orderItemSeqId" type="String" required="true"/>
+            <parameter name="quantity" type="BigDecimal"/>
+            <parameter name="status" type="String"/>
+        </in-parameters>
+    </service>
+
+    <service verb="delete" noun="OrderItem" type="entity-auto">
+        <description>Delete an OrderItem record</description>
+        <in-parameters>
+            <parameter name="orderItemSeqId" type="String" required="true"/>
+        </in-parameters>
+    </service>
+
+</services>

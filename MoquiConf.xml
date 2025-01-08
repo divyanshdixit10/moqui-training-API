@@ -1,0 +1,10 @@
+<entity-facade>
+    <entity-group name="default" entity-location="component://moqui-training-API/entity"/>
+        <load data="seed">
+            <reader type="xml" location="component://moqui-training-API/Data/PartyData.xml"/>
+            <reader type="xml" location="component://moqui-training-API/Data/ContactMechData.xml"/>
+            <reader type="xml" location="component://moqui-training-API/Data/OrderHeaderData.xml"/>
+            <reader type="xml" location="component://moqui-training-API/Data/OrderItemData.xml"/>
+            <reader type="xml" location="component://moqui-training-API/Data/ProductData.xml"/>
+        </load>
+</entity-facade>

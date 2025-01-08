@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+    <!-- service for create the party -->
+    <service verb="create" noun="Party">
+        <in-parameters>
+            <auto-parameters include="all" />
+        </in-parameters>
+        <out-parameters>
+            <auto-parameters include="pk" />
+        </out-parameters>
+        <actions>
+            <entity-make-value entity-name="moqui.training.Party" value-field="datafield" />
+            <entity-set value-field="datafield"  include="all"/>
+            <if condition="datafield.partyId == null">
+                <entity-sequenced-id-primary value-field="datafield"/>
+            </if>
+            <entity-create value-field="datafield" />
+        </actions>
+    </service>
+
+
+    <!-- Service to get the party -->
+
+    <service verb="get" noun="Party">
+        <in-parameters>
+            <parameter name="partyId" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="partyList"></parameter>
+        </out-parameters>
+
+        <actions>
+            <entity-find entity-name="moqui.training.Party" list="partyList">
+                <econdition field-name="partyId"/>
+                <select-field field-name="partyType" />
+                <select-field field-name="partyId" />
+                <select-field field-name="lastName" />
+                <select-field field-name="firstName" />
+            </entity-find>
+        </actions>
+    </service>
+
+    <!-- Update party -->
+    <service verb="put" noun="Party">
+        <in-parameters>
+            <auto-parameters include="all"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="pk"></parameter>
+        </out-parameters>
+
+        <actions>
+            <entity-find-one entity-name="moqui.training.Party" value-field="partyList">
+                <field-map field-name="partyId" from="context.partyId" />
+            </entity-find-one>
+            <if condition="partyList != null">
+                <entity-set value-field="partyList" include="all" />
+                <entity-update value-field="partyList"/>
+            </if>
+        </actions>
+    </service>
+
+    <!-- service for delete -->
+    <service verb="delete" noun="Party">
+        <in-parameters>
+            <parameter name="partyId" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="partyId" />
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="moqui.training.Party" value-field="filterdata">
+                <field-map field-name="partyId"/>
+            </entity-find-one>
+            <if condition="filterdata!=null">
+                <entity-delete value-field="filterdata"/>
+            </if>
+        </actions>
+    </service>
+</services>

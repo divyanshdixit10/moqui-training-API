@@ -1,0 +1,5 @@
+<entity-xml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-3.xsd">
+    <OrderItem orderItemSeqId="OI1001" orderId="ORD1001" productId="PRD1001" quantity="1" status="Shipped"/>
+    <OrderItem orderItemSeqId="OI1002" orderId="ORD1002" productId="PRD1002" quantity="2" status="Processing"/>
+    <OrderItem orderItemSeqId="OI1003" orderId="ORD1003" productId="PRD1003" quantity="1" status="Delivered"/>
+</entity-xml>

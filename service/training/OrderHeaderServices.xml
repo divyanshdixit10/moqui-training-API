@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+
+    <service verb="create" noun="OrderHeader" type="entity-auto">
+        <description>Create an OrderHeader record automatically</description>
+        <in-parameters>
+            <parameter name="orderDate" type="Timestamp" required="true"/>
+            <parameter name="partyId" type="String"/>
+            <parameter name="shippingContactMechId" type="String"/>
+            <parameter name="billingContactMechId" type="String"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="orderId"/>
+        </out-parameters>
+    </service>
+
+    <service verb="update" noun="OrderHeader" type="entity-auto">
+        <description>Update an OrderHeader record</description>
+        <in-parameters>
+            <parameter name="orderId" type="String" required="true"/>
+            <parameter name="orderDate" type="Timestamp"/>
+            <parameter name="partyId" type="String"/>
+            <parameter name="shippingContactMechId" type="String"/>
+            <parameter name="billingContactMechId" type="String"/>
+        </in-parameters>
+    </service>
+
+    <service verb="delete" noun="OrderHeader" type="entity-auto">
+        <description>Delete an OrderHeader record</description>
+        <in-parameters>
+            <parameter name="orderId" type="String" required="true"/>
+        </in-parameters>
+    </service>
+
+</services>

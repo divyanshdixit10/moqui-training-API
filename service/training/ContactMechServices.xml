@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+
+    <service verb="create" noun="ContactMech" type="entity-auto">
+        <description>Create a ContactMech record automatically</description>
+        <in-parameters>
+            <parameter name="partyId" type="String" required="true"/>
+            <parameter name="streetAddress" type="String" required="true"/>
+            <parameter name="city" type="String"/>
+            <parameter name="state" type="String"/>
+            <parameter name="postalCode" type="String"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="contactMechId"/>
+        </out-parameters>
+    </service>
+
+    <service verb="update" noun="ContactMech" type="entity-auto">
+        <description>Update a ContactMech record</description>
+        <in-parameters>
+            <parameter name="contactMechId" type="String" required="true"/>
+            <parameter name="streetAddress" type="String"/>
+            <parameter name="city" type="String"/>
+            <parameter name="state" type="String"/>
+            <parameter name="postalCode" type="String"/>
+        </in-parameters>
+    </service>
+
+    <service verb="delete" noun="ContactMech" type="entity-auto">
+        <description>Delete a ContactMech record</description>
+        <in-parameters>
+            <parameter name="contactMechId" type="String" required="true"/>
+        </in-parameters>
+    </service>
+
+</services>

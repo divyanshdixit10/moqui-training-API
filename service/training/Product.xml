@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+
+    <!-- Service to create a Product -->
+    <service verb="create" noun="Product">
+        <in-parameters>
+            <auto-parameters include="all" />
+        </in-parameters>
+        <out-parameters>
+            <auto-parameters include="pk" />
+        </out-parameters>
+        <actions>
+            <entity-make-value entity-name="training.Product" value-field="datafield" />
+            <entity-set value-field="datafield" include="all"/>
+            <if condition="datafield.productId == null">
+                <entity-sequenced-id-primary value-field="datafield"/>
+            </if>
+            <entity-create value-field="datafield" />
+        </actions>
+    </service>
+
+    <!-- Service to get Product -->
+    <service verb="get" noun="Product">
+        <in-parameters>
+            <parameter name="productId" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productList"/>
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="training.Product" list="productList">
+                <econdition field-name="productId"/>
+                <select-field field-name="productId" />
+                <select-field field-name="productName" />
+                <select-field field-name="color" />
+                <select-field field-name="size" />
+            </entity-find>
+        </actions>
+    </service>
+
+    <!-- Update Product -->
+    <service verb="put" noun="Product">
+        <in-parameters>
+            <auto-parameters include="all"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="pk"/>
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="training.Product" value-field="productList">
+                <field-map field-name="productId" from="context.productId" />
+            </entity-find-one>
+            <if condition="productList != null">
+                <entity-set value-field="productList" include="all" />
+                <entity-update value-field="productList"/>
+            </if>
+        </actions>
+    </service>
+
+    <!-- Service to delete Product -->
+    <service verb="delete" noun="Product">
+        <in-parameters>
+            <parameter name="productId" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productId" />
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="training.Product" value-field="filterdata">
+                <field-map field-name="productId"/>
+            </entity-find-one>
+            <if condition="filterdata!=null">
+                <entity-delete value-field="filterdata"/>
+            </if>
+        </actions>
+    </service>
+
+</services>

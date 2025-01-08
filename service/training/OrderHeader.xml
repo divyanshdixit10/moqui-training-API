@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+    <!-- Service for creating an OrderHeader -->
+    <service verb="create" noun="OrderHeader">
+        <in-parameters>
+            <auto-parameters include="all" />
+        </in-parameters>
+        <out-parameters>
+            <auto-parameters include="pk" />
+        </out-parameters>
+        <actions>
+            <entity-make-value entity-name="moqui.training.OrderHeader" value-field="datafield" />
+            <entity-set value-field="datafield" include="all"/>
+            <if condition="datafield.orderId == null">
+                <entity-sequenced-id-primary value-field="datafield"/>
+            </if>
+            <entity-create value-field="datafield" />
+        </actions>
+    </service>
+
+    <!-- Service to get an OrderHeader -->
+    <service verb="get" noun="OrderHeader">
+        <in-parameters>
+            <parameter name="orderId" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="orderHeaderList"></parameter>
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="moqui.training.OrderHeader" list="orderHeaderList">
+                <econdition field-name="orderId"/>
+                <select-field field-name="orderId" />
+                <select-field field-name="orderDate" />
+                <select-field field-name="partyId" />
+                <select-field field-name="shippingContactMechId" />
+                <select-field field-name="billingContactMechId" />
+            </entity-find>
+        </actions>
+    </service>
+
+    <!-- Update OrderHeader -->
+    <service verb="put" noun="OrderHeader">
+        <in-parameters>
+            <auto-parameters include="all"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="pk"></parameter>
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="moqui.training.OrderHeader" value-field="orderHeaderList">
+                <field-map field-name="orderId" from="context.orderId" />
+            </entity-find-one>
+            <if condition="orderHeaderList != null">
+                <entity-set value-field="orderHeaderList" include="all" />
+                <entity-update value-field="orderHeaderList"/>
+            </if>
+        </actions>
+    </service>
+
+    <!-- Service for deleting OrderHeader -->
+    <service verb="delete" noun="OrderHeader">
+        <in-parameters>
+            <parameter name="orderId" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="orderId" />
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="moqui.training.OrderHeader" value-field="filterdata">
+                <field-map field-name="orderId"/>
+            </entity-find-one>
+            <if condition="filterdata != null">
+                <entity-delete value-field="filterdata"/>
+            </if>
+        </actions>
+    </service>
+</services>
