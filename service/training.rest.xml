@@ -1,78 +1,99 @@
 <resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/rest-api-3.xsd"
-          name="Test" displayName="Training API" version="1.0.0" description="Services for Customer">
-    <resource name="Party" require-authentication="anonymous-all">
-<!--        <id name="parties">-->
+          name="Test" require-authentication="anonymous-all">
+    <resource name="parties" require-authentication="anonymous-all">
         <method type="post" require-authentication="anonymous-all">
-            <service name="training.Party.create#Party" />
+            <service name="training.Party.create#Party"/>
         </method>
-<!--        </id>-->
-<!--        <id name="parties">-->
-        <method type="get" require-authentication="anonymous-all">
-            <service name="training.Party.get#Party" />
-        </method>
-<!--        </id>-->
-<!--        <id name="parties">-->
-        <method type="put" require-authentication="anonymous-all">
-            <service name="training.Party.put#Party" />
-        </method>
-<!--        </id>-->
-<!--        <id name="parties">-->
-        <method type="delete" require-authentication="anonymous-all">
-            <service name="training.Party.delete#Party" />
-        </method>
-<!--        </id>-->
+
+        <id name="partyId">
+            <method type="get" require-authentication="anonymous-all">
+                <service name="training.Party.get#Party"/>
+            </method>
+            
+            <method type="put" require-authentication="anonymous-all">
+                <service name="training.Party.put#Party"/>
+            </method>
+
+            <method type="delete" require-authentication="anonymous-all">
+                <service name="training.Party.delete#Party"/>
+            </method>
+            
+        </id>
+
+        <resource name="contacts" require-authentication="anonymous-all">
+
+            <method type="post" require-authentication="anonymous-all">
+                <service name="training.ContactMech.create#ContactMech"/>
+            </method>
+
+            <method type="get" require-authentication="anonymous-all">
+                <service name="training.ContactMech.get#ContactMech"/>
+            </method>
+
+            <id name="contactMechId">
+                <method type="put" require-authentication="anonymous-all">
+                    <service name="training.ContactMech.put#ContactMech"/>
+                </method>
+
+                <method type="delete" require-authentication="anonymous-all">
+                    <service name="training.ContactMech.delete#ContactMech"/>
+                </method>
+            </id>
+        </resource>
+
     </resource>
 
-    <resource name="ContactMech" require-authentication="anonymous-all">
-        <method type="post" require-authentication="anonymous-all">
-            <service name="training.ContactMech.create#ContactMech" />
+
+    <resource name="products" require-authentication="anonymous-all">
+
+        <method type="post">
+            <service name="training.Product.create#Product"/>
         </method>
-        <method type="get" require-authentication="anonymous-all">
-            <service name="training.ContactMech.get#ContactMech" />
-        </method>
-        <method type="put" require-authentication="anonymous-all">
-            <service name="training.ContactMech.put#ContactMech" />
-        </method>
-        <method type="delete" require-authentication="anonymous-all">
-            <service name="training.ContactMech.delete#ContactMech" />
-        </method>
+
+        <id name="productId">
+            <method type="get">
+                <service name="training.Product.get#Product"/>
+            </method>
+
+            <method type="put">
+                <service name="training.Product.put#Product"/>
+            </method>
+
+            <method type="delete">
+                <service name="training.Product.delete#Product"/>
+            </method>
+        </id>
+
     </resource>
 
-    <resource name="Product" require-authentication="anonymous-all">
-        <method type="post" require-authentication="anonymous-all">
-            <service name="training.Product.create#Product" />
+    <resource name="orders" require-authentication="anonymous-all">
+
+        <method type="post">
+            <service name="training.OrderHeader.create#OrderHeader"/>
         </method>
-        <method type="get" require-authentication="anonymous-all">
-            <service name="training.Product.get#Product" />
-        </method>
-        <method type="put" require-authentication="anonymous-all">
-            <service name="training.Product.put#Product" />
-        </method>
-        <method type="delete" require-authentication="anonymous-all">
-            <service name="training.Product.delete#Product" />
-        </method>
+
+        <id name="orderId">
+            <method type="get">
+                <service name="training.OrderHeader.get#OrderHeader"/>
+            </method>
+            <method type="put">
+                <service name="training.OrderHeader.put#OrderHeader"/>
+            </method>
+            <method type="delete">
+                <service name="training.OrderHeader.delete#OrderHeader"/>
+            </method>
+            <resource name="items" require-authentication="anonymous-all">
+                <method type="post">
+                    <service name="training.OrderItem.create#OrderItem"/>
+                </method>
+            </resource>
+        </id>
+
+
+
     </resource>
 
-    <resource name="OrderHeader" require-authentication="anonymous-all">
-        <method type="post" require-authentication="anonymous-all">
-            <service name="training.OrderHeader.create#OrderHeader" />
-        </method>
-        <method type="get" require-authentication="anonymous-all">
-            <service name="training.OrderHeader.get#OrderHeader" />
-        </method>
-        <method type="put" require-authentication="anonymous-all">
-            <service name="training.OrderHeader.put#OrderHeader" />
-        </method>
-        <method type="delete" require-authentication="anonymous-all">
-            <service name="training.OrderHeader.delete#OrderHeader" />
-        </method>
-    </resource>
-
-    <resource name="OrderItem" require-authentication="anonymous-all">
-        <method type="post" require-authentication="anonymous-all">
-            <service name="training.OrderItem.create#OrderItem" />
-        </method>
-    </resource>
+  
 
 </resource>
