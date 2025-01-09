@@ -1,8 +1,0 @@
-moqui.training.ProductData,test
-
-product_id,product_name,color,size
-
-PRD001,Laptop,Silver,15"
-PRD002,Phone,Black,6"
-PRD003,Headphones,Red,Over-Ear
-PRD004,Monitor,Black,27"

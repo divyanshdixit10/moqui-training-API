@@ -1,8 +1,0 @@
-moqui.training.ContactMechData,test
-
-contact_mech_id,party_id,street_address,city,state,postal_code
-
-C001,P001,123 Main St,New York,NY,10001
-C002,P002,456 Elm St,Los Angeles,CA,90001
-C003,P003,789 Oak St,Chicago,IL,60601
-C004,P004,101 Pine St,Dallas,TX,75001

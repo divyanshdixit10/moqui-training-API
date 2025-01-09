@@ -1,5 +1,0 @@
-<entity-xml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-3.xsd">
-    <Product productId="PRD1001" productName="Laptop" color="Silver" size="15-inch"/>
-    <Product productId="PRD1002" productName="Smartphone" color="Black" size="6-inch"/>
-    <Product productId="PRD1003" productName="Tablet" color="White" size="10-inch"/>
-</entity-xml>

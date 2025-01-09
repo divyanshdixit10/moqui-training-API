@@ -1,5 +1,0 @@
-<entity-xml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-3.xsd">
-    <Party partyId="P1001" partyType="Individual" firstName="John" lastName="Doe"/>
-    <Party partyId="P1002" partyType="Organization" firstName="Tech" lastName="Corp"/>
-    <Party partyId="P1003" partyType="Individual" firstName="Jane" lastName="Smith"/>
-</entity-xml>

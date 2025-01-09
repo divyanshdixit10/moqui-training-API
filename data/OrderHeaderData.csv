@@ -1,8 +1,0 @@
-moqui.training.OrderHeaderData,test
-
-order_id,order_date,party_id,shipping_contact_mech_id,billing_contact_mech_id
-
-O001,2025-01-01,P001,C001,C002
-O002,2025-01-02,P002,C003,C004
-O003,2025-01-03,P003,C003,C004
-O004,2025-01-04,P004,C004,C001

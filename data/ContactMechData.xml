@@ -1,5 +1,0 @@
-<entity-xml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-3.xsd">
-    <ContactMech contactMechId="CM1001" partyId="P1001" streetAddress="123 Main St" city="New York" state="NY" postalCode="10001"/>
-    <ContactMech contactMechId="CM1002" partyId="P1002" streetAddress="456 Corporate Blvd" city="San Francisco" state="CA" postalCode="94105"/>
-    <ContactMech contactMechId="CM1003" partyId="P1003" streetAddress="789 Elm St" city="Chicago" state="IL" postalCode="60616"/>
-</entity-xml>

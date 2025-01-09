@@ -1,9 +1,0 @@
-moqui.training.OrderItemData,test
-
-order_item_seq_id,order_id,product_id,quantity,status
-
-OI001,O001,PRD001,1,Shipped
-OI002,O001,PRD002,2,Shipped
-OI003,O002,PRD003,1,Pending
-OI004,O003,PRD004,3,Shipped
-OI005,O004,PRD002,1,Pending

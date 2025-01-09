@@ -1,8 +1,0 @@
-moqui.training.PartyData,test
-
-party_id,party_type,first_name,last_name
-
-P001,Customer,John,Doe
-P002,Customer,Jane,Smith
-P003,Supplier,Acme,Corp
-P004,Customer,Michael,Johnson

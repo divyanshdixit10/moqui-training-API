@@ -1,5 +1,0 @@
-<entity-xml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-3.xsd">
-    <OrderHeader orderId="ORD1001" orderDate="2025-01-01" partyId="P1001" shippingContactMechId="CM1001" billingContactMechId="CM1001"/>
-    <OrderHeader orderId="ORD1002" orderDate="2025-01-02" partyId="P1002" shippingContactMechId="CM1002" billingContactMechId="CM1002"/>
-    <OrderHeader orderId="ORD1003" orderDate="2025-01-03" partyId="P1003" shippingContactMechId="CM1003" billingContactMechId="CM1003"/>
-</entity-xml>

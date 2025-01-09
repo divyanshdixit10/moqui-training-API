@@ -7,7 +7,7 @@
             <auto-parameters include="all" />
         </in-parameters>
         <out-parameters>
-            <auto-parameters include="pk" />
+            <auto-parameters include="pk" required="true"/>
         </out-parameters>
         <actions>
             <entity-make-value entity-name="moqui.training.ContactMech" value-field="datafield" />
