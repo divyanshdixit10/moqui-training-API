@@ -27,11 +27,11 @@
                 <service name="training.ContactMech.create#ContactMech"/>
             </method>
 
-            <method type="get" require-authentication="anonymous-all">
-                <service name="training.ContactMech.get#ContactMech"/>
-            </method>
 
             <id name="contactMechId">
+                <method type="get" require-authentication="anonymous-all">
+                    <service name="training.ContactMech.get#ContactMech"/>
+                </method>
                 <method type="put" require-authentication="anonymous-all">
                     <service name="training.ContactMech.put#ContactMech"/>
                 </method>
