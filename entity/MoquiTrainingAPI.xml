@@ -52,7 +52,7 @@
         </relationship>
     </entity>
 
-    <entity entity-name="Product" package="training" table-name="product">
+    <entity entity-name="Product" package="moqui.training" table-name="product">
         <field name="productId" type="id" is-pk="true"/>
         <field name="productName" type="text-medium" not-null="true"/>
         <field name="color" type="text-medium"/>

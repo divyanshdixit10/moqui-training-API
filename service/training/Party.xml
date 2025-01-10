@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
-    <!-- service for create the party -->
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+    <!-- Service for creating a Party -->
     <service verb="create" noun="Party">
         <in-parameters>
             <auto-parameters include="all" />
@@ -10,16 +11,15 @@
         </out-parameters>
         <actions>
             <entity-make-value entity-name="moqui.training.Party" value-field="datafield" />
-            <entity-set value-field="datafield"  include="all"/>
+            <entity-set value-field="datafield" include="all" />
             <if condition="datafield.partyId == null">
-                <entity-sequenced-id-primary value-field="datafield"/>
+                <entity-sequenced-id-primary value-field="datafield" />
             </if>
             <entity-create value-field="datafield" />
         </actions>
     </service>
 
-    <!-- Service to get the party -->
-
+    <!-- Service to get a Party -->
     <service verb="get" noun="Party">
         <in-parameters>
             <parameter name="partyId" />
@@ -27,10 +27,9 @@
         <out-parameters>
             <parameter name="partyList"></parameter>
         </out-parameters>
-
         <actions>
             <entity-find entity-name="moqui.training.Party" list="partyList">
-                <econdition field-name="partyId"/>
+                <econdition field-name="partyId" />
                 <select-field field-name="partyType" />
                 <select-field field-name="partyId" />
                 <select-field field-name="lastName" />
@@ -39,41 +38,145 @@
         </actions>
     </service>
 
-    <!-- Update party -->
+    <!-- Service for updating a Party -->
     <service verb="put" noun="Party">
         <in-parameters>
-            <auto-parameters include="all"/>
+            <auto-parameters include="all" />
         </in-parameters>
         <out-parameters>
             <parameter name="pk"></parameter>
         </out-parameters>
-
         <actions>
             <entity-find-one entity-name="moqui.training.Party" value-field="partyList">
                 <field-map field-name="partyId" from="context.partyId" />
             </entity-find-one>
             <if condition="partyList != null">
                 <entity-set value-field="partyList" include="all" />
-                <entity-update value-field="partyList"/>
+                <entity-update value-field="partyList" />
             </if>
         </actions>
     </service>
 
-    <!-- service for delete -->
+    <!-- Service for deleting a Party -->
     <service verb="delete" noun="Party">
         <in-parameters>
             <parameter name="partyId" />
         </in-parameters>
         <out-parameters>
             <parameter name="partyId" />
+            <parameter name="filterdata"></parameter>
+            <parameter name="rrr" />
         </out-parameters>
         <actions>
+            <!-- Find the Party to delete -->
             <entity-find-one entity-name="moqui.training.Party" value-field="filterdata">
-                <field-map field-name="partyId"/>
+                <field-map field-name="partyId" from="context.partyId" />
             </entity-find-one>
-            <if condition="filterdata!=null">
-                <entity-delete value-field="filterdata"/>
+
+            <!-- Check if the Party exists -->
+            <if condition="filterdata != null">
+                <!-- Check for related records (foreign key references) -->
+                <entity-find-one entity-name="OrderHeader" value-field="relatedList">
+                    <field-map field-name="partyId" from="context.partyId" />
+                </entity-find-one>
+
+                <if condition="relatedList" >
+                    <message>Cannot delete Party with ID ${context.partyId} because it is referenced in other records.</message>
+                </if>
+                <if condition="!relatedList">
+
+                    <entity-delete-related value-field="filterdata" relationship-name="ContactMech" />
+                    <entity-delete value-field="filterdata " />
+                </if>
+            </if>
+            <if condition="!filterdata">
+                <message>Cannot delete Party with ID ${context.partyId} because it does not exist.</message>
             </if>
         </actions>
+
     </service>
 </services>
+
+
+<!--<?xml
+version="1.0" encoding="UTF-8"?>-->
+<!--<services
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">-->
+<!--    &lt;!&ndash; service for create the party &ndash;&gt;-->
+<!--    <service verb="create" noun="Party">-->
+<!--        <in-parameters>-->
+<!--            <auto-parameters include="all" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <auto-parameters include="pk" />-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-make-value entity-name="moqui.training.Party" value-field="datafield" />-->
+<!--            <entity-set value-field="datafield"  include="all"/>-->
+<!--            <if condition="datafield.partyId == null">-->
+<!--                <entity-sequenced-id-primary value-field="datafield"/>-->
+<!--            </if>-->
+<!--            <entity-create value-field="datafield" />-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Service to get the party &ndash;&gt;-->
+
+<!--    <service verb="get" noun="Party">-->
+<!--        <in-parameters>-->
+<!--            <parameter name="partyId" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="partyList"></parameter>-->
+<!--        </out-parameters>-->
+
+<!--        <actions>-->
+<!--            <entity-find entity-name="moqui.training.Party" list="partyList">-->
+<!--                <econdition field-name="partyId"/>-->
+<!--                <select-field field-name="partyType" />-->
+<!--                <select-field field-name="partyId" />-->
+<!--                <select-field field-name="lastName" />-->
+<!--                <select-field field-name="firstName" />-->
+<!--            </entity-find>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Update party &ndash;&gt;-->
+<!--    <service verb="put" noun="Party">-->
+<!--        <in-parameters>-->
+<!--            <auto-parameters include="all"/>-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="pk"></parameter>-->
+<!--        </out-parameters>-->
+
+<!--        <actions>-->
+<!--            <entity-find-one entity-name="moqui.training.Party" value-field="partyList">-->
+<!--                <field-map field-name="partyId" from="context.partyId" />-->
+<!--            </entity-find-one>-->
+<!--            <if condition="partyList != null">-->
+<!--                <entity-set value-field="partyList" include="all" />-->
+<!--                <entity-update value-field="partyList"/>-->
+<!--            </if>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; service for delete &ndash;&gt;-->
+<!--    <service verb="delete" noun="Party">-->
+<!--        <in-parameters>-->
+<!--            <parameter name="partyId" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="partyId" />-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find-one entity-name="moqui.training.Party" value-field="filterdata">-->
+<!--                <field-map field-name="partyId"/>-->
+<!--            </entity-find-one>-->
+<!--            <if condition="filterdata!=null">-->
+<!--                <entity-delete value-field="filterdata"/>-->
+<!--            </if>-->
+<!--        </actions>-->
+<!--    </service>-->
+<!--</services>-->

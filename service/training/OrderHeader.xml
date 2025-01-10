@@ -66,12 +66,127 @@
             <parameter name="orderId" />
         </out-parameters>
         <actions>
-            <entity-find-one entity-name="moqui.training.OrderHeader" value-field="filterdata">
-                <field-map field-name="orderId"/>
-            </entity-find-one>
-            <if condition="filterdata != null">
-                <entity-delete value-field="filterdata"/>
-            </if>
+            <actions>
+                <!-- Find the OrderHeader to delete -->
+                <entity-find-one entity-name="moqui.training.OrderHeader" value-field="filterData">
+                    <field-map field-name="orderId" from="context.orderId" />
+                </entity-find-one>
+
+                <!-- Check if the OrderHeader exists -->
+                <if condition="filterData != null">
+                    <!-- Check for references in OrderItem -->
+                    <entity-find-one entity-name="moqui.training.OrderItem" value-field="relatedItems">
+                        <field-map field-name="orderId" from="context.orderId" />
+                    </entity-find-one>
+                    <if condition="relatedItems != null">
+                        <message>Cannot delete OrderHeader with ID ${context.orderId} because it is referenced in OrderItem.</message>
+                    </if>
+
+                    <!-- Check for references in ContactMech (Shipping and Billing) -->
+                    <entity-find-one entity-name="moqui.training.ContactMech" value-field="relatedContactMech">
+                        <field-map field-name="contactMechId" from="filterData.shippingContactMechId" />
+                    </entity-find-one>
+                    <if condition="relatedContactMech != null">
+                        <message>Cannot delete OrderHeader with ID ${context.orderId} because it is referenced in Shipping ContactMech.</message>
+                    </if>
+                    <entity-find-one entity-name="moqui.training.ContactMech" value-field="relatedContactMech">
+                        <field-map field-name="contactMechId" from="filterData.billingContactMechId" />
+                    </entity-find-one>
+                    <if condition="relatedContactMech != null">
+                        <message>Cannot delete OrderHeader with ID ${context.orderId} because it is referenced in Billing ContactMech.</message>
+                    </if>
+
+                    <!-- If no references, delete OrderHeader -->
+                    <if condition="relatedItems == null &amp; relatedContactMech == null">
+                        <entity-delete value-field="filterData" />
+                    </if>
+                </if>
+
+                <!-- If OrderHeader does not exist -->
+                <if condition="filterData == null">
+                    <message>Cannot delete OrderHeader with ID ${context.orderId} because it does not exist.</message>
+                </if>
+            </actions>
+
         </actions>
     </service>
 </services>
+
+
+        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">-->
+<!--    &lt;!&ndash; Service for creating an OrderHeader &ndash;&gt;-->
+<!--    <service verb="create" noun="OrderHeader">-->
+<!--        <in-parameters>-->
+<!--            <auto-parameters include="all" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <auto-parameters include="pk" />-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-make-value entity-name="moqui.training.OrderHeader" value-field="datafield" />-->
+<!--            <entity-set value-field="datafield" include="all"/>-->
+<!--            <if condition="datafield.orderId == null">-->
+<!--                <entity-sequenced-id-primary value-field="datafield"/>-->
+<!--            </if>-->
+<!--            <entity-create value-field="datafield" />-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Service to get an OrderHeader &ndash;&gt;-->
+<!--    <service verb="get" noun="OrderHeader">-->
+<!--        <in-parameters>-->
+<!--            <parameter name="orderId" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="orderHeaderList"></parameter>-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find entity-name="moqui.training.OrderHeader" list="orderHeaderList">-->
+<!--                <econdition field-name="orderId"/>-->
+<!--                <select-field field-name="orderId" />-->
+<!--                <select-field field-name="orderDate" />-->
+<!--                <select-field field-name="partyId" />-->
+<!--                <select-field field-name="shippingContactMechId" />-->
+<!--                <select-field field-name="billingContactMechId" />-->
+<!--            </entity-find>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Update OrderHeader &ndash;&gt;-->
+<!--    <service verb="put" noun="OrderHeader">-->
+<!--        <in-parameters>-->
+<!--            <auto-parameters include="all"/>-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="pk"></parameter>-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find-one entity-name="moqui.training.OrderHeader" value-field="orderHeaderList">-->
+<!--                <field-map field-name="orderId" from="context.orderId" />-->
+<!--            </entity-find-one>-->
+<!--            <if condition="orderHeaderList != null">-->
+<!--                <entity-set value-field="orderHeaderList" include="all" />-->
+<!--                <entity-update value-field="orderHeaderList"/>-->
+<!--            </if>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Service for deleting OrderHeader &ndash;&gt;-->
+<!--    <service verb="delete" noun="OrderHeader">-->
+<!--        <in-parameters>-->
+<!--            <parameter name="orderId" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="orderId" />-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find-one entity-name="moqui.training.OrderHeader" value-field="filterdata">-->
+<!--                <field-map field-name="orderId"/>-->
+<!--            </entity-find-one>-->
+<!--            <if condition="filterdata != null">-->
+<!--                <entity-delete value-field="filterdata"/>-->
+<!--            </if>-->
+<!--        </actions>-->
+<!--    </service>-->
+<!--</services>-->

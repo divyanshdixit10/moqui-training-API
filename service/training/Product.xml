@@ -10,7 +10,7 @@
             <auto-parameters include="pk" />
         </out-parameters>
         <actions>
-            <entity-make-value entity-name="training.Product" value-field="datafield" />
+            <entity-make-value entity-name="moqui.training.Product" value-field="datafield" />
             <entity-set value-field="datafield" include="all"/>
             <if condition="datafield.productId == null">
                 <entity-sequenced-id-primary value-field="datafield"/>
@@ -25,11 +25,11 @@
             <parameter name="productId" required="true"/>
         </in-parameters>
         <out-parameters>
-            <parameter  name="productList" required="true"/>
+            <parameter name="productList" required="true"/>
         </out-parameters>
         <actions>
-            <entity-find entity-name="training.Product" list="productList">
-                <econdition  field-name="productId" ignore-if-empty="true"/>
+            <entity-find entity-name="moqui.training.Product" list="productList">
+                <econdition field-name="productId" ignore-if-empty="true"/>
                 <select-field field-name="productName"/>
                 <select-field field-name="color"/>
                 <select-field field-name="size"/>
@@ -43,38 +43,130 @@
             <auto-parameters include="all"/>
         </in-parameters>
         <out-parameters>
-            <parameter name="productlist" />
+            <parameter name="pk" />
         </out-parameters>
         <actions>
-            <entity-find-one entity-name="training.Product" value-field="productlist">
+            <entity-find-one entity-name="moqui.training.Product" value-field="productlist">
                 <field-map field-name="productId" from="context.productId"/>
             </entity-find-one>
             <if condition="productlist != null">
-                <set field="productlist.productName" from="context.productName" />
-                <set field="productlist.color" from="context.color" />
-                <set field="productlist.size" from="context.size" />
+                <entity-set value-field="productlist" include="all" />
                 <entity-update value-field="productlist" />
             </if>
+            <else>
+                <message>Cannot update Product. No Product found with ID ${context.productId}.</message>
+            </else>
         </actions>
     </service>
 
     <!-- Service to delete Product -->
     <service verb="delete" noun="Product">
         <in-parameters>
-            <parameter name="productId" />
+            <parameter name="productId" required="true" />
         </in-parameters>
         <out-parameters>
             <parameter name="productId" />
         </out-parameters>
         <actions>
-            <entity-find-one entity-name="training.Product" value-field="filterdata">
-                <field-map field-name="productId"/>
+            <entity-find-one entity-name="moqui.training.Product" value-field="filterdata">
+                <field-map field-name="productId" from="context.productId"/>
             </entity-find-one>
-            <if condition="filterdata!=null">
-                <entity-delete-related value-field="filterdata" relationship-name="OrderItem" />
-                <entity-delete value-field="filterdata"/>
+            <if condition="filterdata != null">
+                <!-- Check for related records (references in OrderItem) -->
+                <entity-find-related value-field="relatedRecords" relationship-name="OrderItem" list="relatedList" />
+                <if condition="!relatedList">
+                    <entity-delete value-field="filterdata"/>
+                </if>
+                <else>
+                    <message>Cannot delete Product with ID ${context.productId} as it is referenced in other records.</message>
+                </else>
             </if>
+            <else>
+                <message>Cannot delete Product. No Product found with ID ${context.productId}.</message>
+            </else>
         </actions>
     </service>
 
 </services>
+
+
+        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">-->
+
+<!--    &lt;!&ndash; Service to create a Product &ndash;&gt;-->
+<!--    <service verb="create" noun="Product">-->
+<!--        <in-parameters>-->
+<!--            <auto-parameters include="all" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <auto-parameters include="pk" />-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-make-value entity-name="moqui.training.Product" value-field="datafield" />-->
+<!--            <entity-set value-field="datafield" include="all"/>-->
+<!--            <if condition="datafield.productId == null">-->
+<!--                <entity-sequenced-id-primary value-field="datafield"/>-->
+<!--            </if>-->
+<!--            <entity-create value-field="datafield" />-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Service to get Product &ndash;&gt;-->
+<!--    <service verb="get" noun="Product">-->
+<!--        <in-parameters>-->
+<!--            <parameter name="productId" required="true"/>-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter  name="productList" required="true"/>-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find entity-name="moqui.training.Product" list="productList">-->
+<!--                <econdition  field-name="productId" ignore-if-empty="true"/>-->
+<!--                <select-field field-name="productName"/>-->
+<!--                <select-field field-name="color"/>-->
+<!--                <select-field field-name="size"/>-->
+<!--            </entity-find>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Update Product &ndash;&gt;-->
+<!--    <service verb="put" noun="Product">-->
+<!--        <in-parameters>-->
+<!--            <auto-parameters include="all"/>-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="productlist" />-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find-one entity-name="moqui.training.Product" value-field="productlist">-->
+<!--                <field-map field-name="productId" from="context.productId"/>-->
+<!--            </entity-find-one>-->
+<!--            <if condition="productlist != null">-->
+<!--                <set field="productlist.productName" from="context.productName" />-->
+<!--                <set field="productlist.color" from="context.color" />-->
+<!--                <set field="productlist.size" from="context.size" />-->
+<!--                <entity-update value-field="productlist" />-->
+<!--            </if>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--    &lt;!&ndash; Service to delete Product &ndash;&gt;-->
+<!--    <service verb="delete" noun="Product">-->
+<!--        <in-parameters>-->
+<!--            <parameter name="productId" />-->
+<!--        </in-parameters>-->
+<!--        <out-parameters>-->
+<!--            <parameter name="productId" />-->
+<!--        </out-parameters>-->
+<!--        <actions>-->
+<!--            <entity-find-one entity-name="moqui.training.Product" value-field="filterdata">-->
+<!--                <field-map field-name="productId"/>-->
+<!--            </entity-find-one>-->
+<!--            <if condition="filterdata!=null">-->
+<!--                <entity-delete-related value-field="filterdata" relationship-name="OrderItem" />-->
+<!--                <entity-delete value-field="filterdata"/>-->
+<!--            </if>-->
+<!--        </actions>-->
+<!--    </service>-->
+
+<!--</services>-->
