@@ -3,7 +3,6 @@
 RESTful API for Party, Product, and Order Management
 This project implements a RESTful API to manage party data, product data, and order data. Below are the available API endpoints for each task.
 
-Task 2: Develop RESTful APIs for Party Data
 
 1. Create a Party: `POST /parties`
 Creates a new party.
